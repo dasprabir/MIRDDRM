@@ -1,0 +1,56 @@
+data:
+  dataset: us_images
+  image_size: 512
+  channels: 1
+  logit_transform: false
+  uniform_dequantization: false
+  gaussian_dequantization: false
+  random_flip: true
+  rescaled: true
+  num_workers: 1
+  subset_1k: false
+  out_of_dist: false
+
+model:
+  type: openai
+  in_channels: 3          # <- set to 3 for pseudo-RGB
+  out_channels: 3         # <- set to 3 to match
+  num_channels: 256
+  num_heads: 4
+  num_res_blocks: 2
+  attention_resolutions: "32,16,8"
+  dropout: 0.0
+  resamp_with_conv: true
+  learn_sigma: true
+  use_scale_shift_norm: true
+  use_fp16: false
+  resblock_updown: true
+  num_heads_upsample: -1
+  var_type: fixedsmall
+  num_head_channels: 64
+  image_size: 512
+  class_cond: false
+  use_new_attention_order: false
+  degradation: true
+  known_GT: true
+
+classifier:
+  image_size: 512
+  classifier_attention_resolutions: "32,16,8"
+  classifier_depth: 2
+  classifier_pool: attention
+  classifier_resblock_updown: true
+  classifier_width: 128
+  classifier_use_scale_shift_norm: true
+  classifier_scale: 1.0
+  classifier_use_fp16: false
+
+diffusion:
+  beta_schedule: linear
+  beta_start: 0.0001
+  beta_end: 0.02
+  num_diffusion_timesteps: 1000
+
+sampling:
+  batch_size: 1
+  last_only: true

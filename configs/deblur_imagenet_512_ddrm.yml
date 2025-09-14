@@ -1,0 +1,40 @@
+# deblur_imagenet_512_ddrm.yml
+# -------------------------------------------
+# 512×512 DDRM with the official ImageNet UNet
+# (class-conditional – no ground-truth needed)
+# -------------------------------------------
+
+data:
+  image_size: 512         # ← resize target used by the UNet
+  channels: 3
+  loader: mat             # you feed .mat RF fields
+
+
+model:
+  type: "openai"
+  image_size: 512
+  in_channels: 3
+  out_channels: 3
+  num_channels: 256          # ← was 128
+  num_res_blocks: 2
+  channel_mult: "1,1,2,2,4,4"
+  attention_resolutions: "64,32,16"
+  dropout: 0.0
+  learn_sigma: true
+  class_cond: true           # OpenAI ImageNet models are class-cond
+  resblock_updown: true
+  use_scale_shift_norm: true
+
+diffusion:
+  beta_schedule:   linear
+  beta_start:      0.0001
+  beta_end:        0.02
+  num_diffusion_timesteps: 1000
+
+sampling:
+  batch_size: 1
+  last_only: true
+
+# DDRM flags (no extra degradation, no GT)
+degradation: false
+known_GT:    false
